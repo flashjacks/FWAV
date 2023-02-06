@@ -1,4 +1,4 @@
-# FWAV V1.1
+# FWAV v1.1
  Flashjacks Wave Loader
 
 
