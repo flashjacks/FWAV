@@ -1,0 +1,55 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Penguin Adventure. 60Hz.
+@00,07,,,90,,; Selecciona el nivel de volumen de las canciones. Para el Penguin adventure queda bien con el PSG(a tope) a 90 el ADPCM.
+@01,01,01-MAI~1.WAV,E03C,A7,FF,FF; Carga canción sin bucle: MAIN TITLE
+@02,01,02-GAM~1.WAV,E03C,AD,FF,FF; Carga canción sin bucle: GAME START
+@03,0C,03-WOO~1.WAV,E03C,44,7F,FF; Carga canción con bucle y premute: WOOD-STAGE 1
+@04,0C,04-CAV~1.WAV,E03C,4D,7F,FF; Carga canción con bucle y premute: CAVERN-STAGE 2
+@05,0C,05-ICE~1.WAV,E03C,3B,7F,FF; Carga canción con bucle y premute: ICE-STAGE 3
+@06,0C,06-RIV~1.WAV,E03C,4A,7F,FF; Carga canción con bucle y premute: RIVER-STAGE 4
+@07,0C,07-UND~1.WAV,E03C,50,7F,FF; Carga canción con bucle y premute: UNDERSEA-STAGE 5
+@08,0C,08-DES~1.WAV,E03C,41,7F,FF; Carga canción con bucle y premute: DESERT-STAGE 6
+@09,0C,09-ICE~1.WAV,E03C,47,7F,FF; Carga canción con bucle y premute: ICEBERGS-STAGE 7
+@0A,0C,10-FRO~1.WAV,E03C,3E,7F,FF; Carga canción con bucle y premute: FROZEN WOOD-STAGE 8
+@0B,0C,11-SHO~1.WAV,E03C,6B,7F,FF; Carga canción con bucle y premute: SHOP1 FINE
+@0C,0C,12-SHO~1.WAV,E03C,68,7F,FF; Carga canción con bucle y premute: SHOP3 SANTA
+@0D,0C,13-SHO~1.WAV,E03C,6E,7F,FF; Carga canción con bucle y premute: SHOP2 EXPENSIVE
+@0E,0C,14-SLO~1.WAV,E03C,74,7F,FF; Carga canción con bucle y premute: SLOT MACHINE
+@0F,0C,15-SUP~1.WAV,E03C,5C,7F,FF; Carga canción con bucle y premute: SUPER POWER
+@10,0C,17-SPA~1.WAV,E03C,53,7F,FF; Carga canción con bucle y premute: SPACE BONUS
+@11,0C,18-WAR~1.WAV,E03C,5F,7F,FF; Carga canción con bucle y premute: WARP STAGE
+@12,0C,19-PHR~1.WAV,E03C,62,7F,FF; Carga canción con bucle y premute: PHRISAURUS FIGHT
+@13,0C,19-PHR~1.WAV,E03C,65,7F,FF; Carga canción con bucle y premute: PHRISAURUS FIGHT
+@14,01,20-PHR~1.WAV,E03C,B3,FF,FF; Carga canción sin bucle: PHRISAURUS MARCH B
+@15,01,21-PHR~1.WAV,E03C,B6,FF,FF; Carga canción sin bucle: PHRISAURUS MARCH A
+@16,01,22-STA~1.WAV,E03C,B0,FF,FF; Carga canción sin bucle: STAGE REST
+@17,01,23-APP~1.WAV,E03C,71,FF,FF; Carga canción sin bucle: APPLE ENDING PART I
+@18,01,24-APP~1.WAV,E03C,B9,FF,FF; Carga canción sin bucle: APPLE ENDING PART II
+@19,01,25-GOO~1.WAV,E03C,BC,FF,FF; Carga canción sin bucle: GOOD ENDING
+@1A,01,26-SAD~1.WAV,E03C,BF,FF,FF; Carga canción sin bucle: SAD ENDING
+@1B,01,27-END~1.WAV,E03C,C2,FF,FF; Carga canción sin bucle: END CREDITS
+
+;Todo esto libre.(1Ch a 36h)
+
+@37,0B,,E051,00,FF,FF; Cambio mute. Todo mute si vale 00. Si no, recupera el valor de la canción en curso.
+@38,04,,E03C,CB,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG.
+@39,04,,E03C,77,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. GAME START 2.
+@3A,04,,E03C,C5,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Volar.
+@3B,04,,E03C,00,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Muerte.
+@3C,04,,E03C,7A,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Enemigo muere.
+@3D,04,,E03C,C8,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Game Over.
+@3E,04,,E03C,9B,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Ding dong salida tienda.
+@3F,05,,E0A0,FF,00,00; Comando de pausar la canción. Activa todos los canales.
+@40,06,,E0A0,00,,; Comando de quitar pausa de la canción. Recupera los canales anteriores.
