@@ -1,0 +1,70 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Solid Snake.
+@00,07,,,90,,; Selecciona el nivel de volumen de las canciones. Para el Solid queda bien con el SCC(a tope) a 90 el ADPCM.
+@01,01,01THEM~1.WAV,C661,99,FF,FF; Carga canción sin bucle: THEME OF SOLID SNAKE
+@02,01,02-ZAN~1.WAV,C661,9A,FF,FF; Carga canción sin bucle: Zanzibar Breeze (Opening Bgm 2)
+@03,02,06-FIR~1.WAV,C661,6A,7E,FF; Carga canción con bucle: First Instruction (Opening Demo)
+@04,01,03-ANO~1.WAV,C661,9B,7E,FF; Carga canción sin bucle: A Notice
+@05,02,04-ANO~1.WAV,C661,83,7E,FF; Carga canción con bucle: First Instruction
+@06,02,05-ANO~1.WAV,C661,A8,7F,FF; Carga canción con bucle: First Instruction2
+@07,01,43-DIS~1.WAV,C661,A5,FF,FF; Carga canción sin bucle: Disposable Life (Game Over Bgm)
+@08,02,07-LEV~1.WAV,C661,74,7E,FF; Carga canción con bucle: Level 3 Warning (Level 3)
+@09,02,21-ANA~1.WAV,C661,9C,7F,FF; Carga canción con bucle: An Advance (Petrovich)
+@0A,02,34-WAV~1.WAV,C661,9D,7E,FF; Carga canción con bucle: Wavelet (Holy Talk)
+@0B,02,19-NIG~1.WAV,C661,9E,7E,FF; Carga canción con bucle: Night Fall (Schneider)
+@0C,02,25-NAT~1.WAV,C661,9F,7E,FF; Carga canción con bucle: Natasha_s Death2
+@0D,02,11-TEA~1.WAV,C661,A0,7E,FF; Carga canción con bucle: Tears (Grey Fox)
+@0E,02,35-BIG~1.WAV,C661,A1,7E,FF; Carga canción con bucle: Big Boss Warning.
+@0F,02,40-RET~1.WAV,C661,A2,7E,FF; Carga canción con bucle: Return (Return Demo).
+@10,02,41-RED~1.WAV,C661,A3,FF,FF; Carga canción con bucle: Red Sun (End Demo 1).
+@11,02,42-FAR~1.WAV,C661,A4,FF,FF; Carga canción con bucle: Farewell (End Demo 2).
+@12,01,09-KIL~1.WAV,C661,A6,7F,FF; Carga canción sin bucle: Killers 1
+@13,01,24-NAT~1.WAV,C661,A7,7E,FF; Carga canción sin bucle: Natasha_s Death
+@14,02,28-SIN~1.WAV,C661,A9,7E,FF; Carga canción con bucle: Sing Sinwg.
+@15,02,27-AJA~1.WAV,C661,AA,7E,FF; Carga canción con bucle: A Jam Blues.
+@16,02,06-FIR~1.WAV,C661,6B,7E,FF; Carga canción con bucle: First Instruction (Opening Demo)
+@17,02,23-SEW~1.WAV,C661,6C,7E,FF; Carga canción con bucle: Sewers.
+@18,02,12-THE~1.WAV,C661,6D,7E,FF; Carga canción con bucle: The Front Line.
+@19,02,12-THE~1.WAV,C661,6E,7E,FF; Carga canción con bucle: The Front Line.
+@1A,02,31-INF~1.WAV,C661,6F,7E,FF; Carga canción con bucle: Infiltration.
+@1B,02,20-LEV~1.WAV,C661,70,7E,FF; Carga canción con bucle: Level 1 Warning.
+@1C,02,17-IMM~1.WAV,C661,71,7E,FF; Carga canción con bucle: Imminent.
+@1D,02,16-ADV~1.WAV,C661,72,7E,FF; Carga canción con bucle: Advance Immediatecy.
+@1E,02,30-FIG~1.WAV,C661,73,7E,FF; Carga canción con bucle: Fight Into Enemy Territory.
+@1F,02,15-BAT~1.WAV,C661,76,7E,FF; Carga canción con bucle: Battle Against Time.
+;Canción 77 desconocida.
+@20,02,39-NON~1.WAV,C661,78,7E,FF; Carga canción con bucle: No Name.
+@21,02,18-KIL~1.WAV,C661,79,7E,FF; Carga canción con bucle: Killers (Boss Bgm 4).
+@22,02,37-SPI~1.WAV,C661,7A,7E,FF; Carga canción con bucle: Spiral. 
+@23,02,38-ESC~1.WAV,C661,7B,7E,FF; Carga canción con bucle: Escape. 
+@24,02,22-RET~1.WAV,C661,7C,7E,FF; Carga canción con bucle: Retrieve Of The Doctor. 
+@25,02,29-UND~1.WAV,C661,7D,7E,FF; Carga canción con bucle: Under The Cloud Of Darkness. 
+@26,02,08-RET~1.WAV,C661,7E,7E,FF; Carga canción con bucle: Return To Dust. 
+@27,02,13-CHA~1.WAV,C661,7F,7E,FF; Carga canción con bucle: Chasing The Green Beret.
+@28,02,14-CHA~1.WAV,C661,80,7E,FF; Carga canción con bucle: Challow.
+@29,02,33-INS~1.WAV,C661,81,7E,FF; Carga canción con bucle: In Security.
+@2A,02,26-ZAN~1.WAV,C661,82,7E,FF; Carga canción con bucle: Zanzibarland National Anthem.
+@2B,02,10-KIL~1.WAV,C661,84,7E,FF; Carga canción con bucle: Killers (Talk Bgm 4).
+;Todo esto libre.(2Ch a 37h)
+@37,04,,C661,86,,; Caida del Boss. Comando de Stop.
+@38,04,,C661,93,,; Caida del Boss. Comando de Stop.
+@39,04,,C661,8D,,; Cancion Muerte. Comando de Stop.
+@3A,04,,C661,8C,,; Cancion Warning. Comando de Stop. 
+@3B,04,,C661,90,,; Cancion TaaaaN Titulo. Comando de Stop. 
+@3C,03,,C661,F6,,; Comando de FadeOut largo. Silencia progresivamente la canción.
+@3D,08,,C661,F4,,; Comando de FadeOut corto. Silencia progresivamente la canción.
+@3E,04,,C661,01,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG.
+@3F,05,,C661,F2,00,00; Comando de pausar la canción. Activa todos los canales.
+@40,06,,C661,F1,,; Comando de quitar pausa de la canción. Recupera los canales anteriores.

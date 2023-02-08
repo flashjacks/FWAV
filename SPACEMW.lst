@@ -1,0 +1,40 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Space Manbow 60Hz.
+@00,07,,,90,,; Selecciona el nivel de volumen de las canciones. Para el Space Manbow queda bien con el SCC(a tope) a 90 el ADPCM.
+@01,01,01BEYO~1.WAV,C87D,4A,FF,FF; Carga canción sin bucle: BEYOND THE DARKNESS 1
+@02,01,02BEYO~1.WAV,C87D,4E,FF,FF; Carga canción sin bucle: BEYOND THE DARKNESS 2
+@03,02,03BATT~1.WAV,C87D,3B,7E,FF; Carga canción con bucle: BATTLE SHIP (1st.BGM)
+@04,02,04HYDR~1.WAV,C87D,39,7E,FF; Carga canción con bucle: HYDRA (Boss)
+@05,02,05PROV~1.WAV,C87D,3C,7E,FF; Carga canción con bucle: PROVIDENCE (2st.BGM)
+@06,02,06AQUA~1.WAV,C87D,3D,7E,FF; Carga canción con bucle: AQUARIUM (3st.BGM)
+@07,02,07PARA~1.WAV,C87D,3E,7E,FF; Carga canción con bucle: PARALLEL SPACE (4st.BGM)
+@08,02,08ZONE~1.WAV,C87D,3F,7E,FF; Carga canción con bucle: ZONE 5150 (5st.BGM)
+@09,02,09DUST~1.WAV,C87D,40,7E,FF; Carga canción con bucle: DUST·DUST·DUST (6st.BGM)
+@0A,02,10FIRE~1.WAV,C87D,41,7E,FF; Carga canción con bucle: FIRE WARNING (7st.BGM)
+@0B,02,11PSYC~1.WAV,C87D,42,7E,FF; Carga canción con bucle: PSYCHOPATHY
+@0C,02,12BRIL~1.WAV,C87D,43,7E,FF; Carga canción con bucle: BRILLIANCE (8st.BGM)
+@0D,02,13MOAN~1.WAV,C87D,3A,7E,FF; Carga canción con bucle: MOAN
+@0E,01,14MEMO~1.WAV,C87D,49,FF,FF; Carga canción sin bucle: MEMOIRE (Ending)
+@0F,01,15DISA~1.WAV,C87D,4B,FF,FF; Carga canción sin bucle: DISAPPEARANCE (Game Over)
+
+
+;Todo esto libre.(10h a 3Ah)
+
+@3B,04,,C87D,4C,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Explosión nos matan.
+@3C,04,,C87D,4D,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Explosión muerte boss.
+@3D,08,,C883,84,,; Comando de FadeOut corto. Silencia progresivamente la canción.
+@3E,05,,C883,82,00,00; Comando de pausar la canción. Activa todos los canales.
+@3F,06,,C883,81,,; Comando de quitar pausa de la canción. Recupera los canales anteriores.
+@40,04,,C87D,55,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG.

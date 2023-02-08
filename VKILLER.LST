@@ -1,0 +1,38 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Vampire killer versión SCC. 60Hz.
+@00,07,,,A0,,; Selecciona el nivel de volumen de las canciones. Para el Vampire Killer queda bien con el PSG+SCC(a tope) a A0 el ADPCM.
+@01,01,01PROL~1.WAV,F0C2,10,FF,FF; Carga canción sin bucle: Prologue (Prologue)
+@02,02,02VAMP~1.WAV,F0C2,06,7F,FF; Carga canción con bucle: Vampire Killer (Vampire Killer (stage 1))
+@03,02,03CROS~1.WAV,F0C2,07,7F,FF; Carga canción con bucle: Cross a Fear (Stalker (stage 2))
+@04,02,04BLOO~1.WAV,F0C2,08,7F,FF; Carga canción con bucle: Bloody Tears (Wicked Child (stage 3))
+@05,02,05SLAS~1.WAV,F0C2,0B,7F,FF; Carga canción con bucle: Slash (Walking on the Edge (stage 4))
+@06,02,06PORT~1.WAV,F0C2,0A,7F,FF; Carga canción con bucle: Portrait of a Ghost Ship (Heart of Fire (stage 5))
+@07,02,07BEGI~1.WAV,F0C2,09,7F,FF; Carga canción con bucle: Beginning (Out of Time (stage 6))
+@08,02,08BOSS~1.WAV,F0C2,0D,7F,FF; Carga canción con bucle: Boss (Poison Mind (Boss))
+@09,01,09PLAY~1.WAV,F0C2,0F,7F,FF; Carga canción sin bucle: Player Miss (Player Miss)
+@0A,01,10GAME~1.WAV,F0C2,11,7F,FF; Carga canción sin bucle: Game Over (Game Over)
+@0B,01,11STAG~1.WAV,F0C2,12,7F,FF; Carga canción sin bucle: Stage Clear (Stage Clear)
+@0C,02,12ILLU~1.WAV,F0C2,0C,7F,FF; Carga canción con bucle: Illusionary Dance (Final Boss (part 1))
+@0D,02,13CROS~1.WAV,F0C2,0E,7F,FF; Carga canción con bucle: Cross Your Heart (Nothing to Lose (Final Boss part 2))
+@0E,01,14ALLC~1.WAV,F0C2,13,7F,FF; Carga canción sin bucle: All Clear (All Clear)
+
+
+;Todo esto libre.(0Fh a 3Bh)
+
+@3C,04,,F0C2,14,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG. Ending
+@3D,04,,F0C2,00,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG.
+@3E,08,,F0C2,84,,; Comando de FadeOut corto. Silencia progresivamente la canción.
+@3F,05,,F0C2,82,00,00; Comando de pausar la canción. Activa todos los canales.
+@40,06,,F0C2,81,,; Comando de quitar pausa de la canción. Recupera los canales anteriores.

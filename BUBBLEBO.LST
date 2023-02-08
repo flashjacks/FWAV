@@ -1,0 +1,33 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Bubble Bobble. 60Hz. Version parcheada para WAVs + parche GDX 0.96
+@00,07,,,90,,; Selecciona el nivel de volumen de las canciones. Para el Penguin adventure queda bien con el PSG(a tope) a 90 el ADPCM.
+@01,01,01INTR~1.WAV,CFF0,C1,FF,FF; Carga canción sin bucle: INTRADUCTION
+@02,02,02MAIN~1.WAV,CFF0,81,DF,FF; Carga canción con bucle: MAIN THEME
+@03,02,03HURR~1.WAV,CFF0,C4,FF,FF; Carga canción sin bucle: HURRY UP EFECT
+@04,02,03HURR~2.WAV,CFF0,83,DF,FF; Carga canción con bucle: HURRY UP MUSIC
+@05,01,04EXTE~1.WAV,CFF0,C3,FF,FF; Carga canción sin bucle: EXTEND EFECT
+@06,02,04EXTE~2.WAV,CFF0,82,FF,FF; Carga canción con bucle: EXTEND MUSIC 
+@07,02,05SECR~1.WAV,CFF0,85,DF,FF; Carga canción con bucle: SECRET ROOM     
+@08,01,06FALS~1.WAV,CFF0,88,FF,FF; Carga canción sin bucle: FALSE ENDING  
+@09,02,07SUPE~1.WAV,CFF0,84,DF,FF; Carga canción con bucle: SUPER DRUNK     
+@0A,01,08REAL~1.WAV,CFF0,C7,FF,FF; Carga canción sin bucle: REAL ENDING        
+@0B,02,09NAME~1.WAV,CFF0,C2,FF,FF; Carga canción con bucle: NAME REGIST
+@0C,01,10GAME~1.WAV,CFF0,8C,FF,FF; Carga canción sin bucle: GAME OVER  
+@0D,01,10GAME~1.WAV,CFF0,C6,FF,FF; Carga canción sin bucle: GAME OVER  
+
+;Todo esto libre.(1Ch a 36h)
+
+@3F,04,,CFF0,C0,DF,FF; Comando de parar cancion. Aparece el fantasma. Poner canal 1 de PSG
+@40,04,,CFF0,C5,DF,FF; Comando de parar cancion. Aparece el fantasma. Poner canal 1 de PSG

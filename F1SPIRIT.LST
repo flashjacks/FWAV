@@ -1,0 +1,37 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; F1 Spirit.(60Hz. En 50Hz las canciones se quedan cortas).
+@00,07,,,E0,,; Selecciona el nivel de volumen de las canciones. Para el F1 Spirit queda bien con el SCC(a tope) a E0 el ADPCM.
+@01,01,01F1SH~1.WAV,E161,33,FF,FF; Carga canción sin bucle: Shuffle (Opening Theme)
+@02,01,02STAR~1.WAV,E161,34,FF,FF; Carga canción sin bucle: Starting Grid (Start)
+@03,02,03MENU~1.WAV,E161,35,7E,FF; Carga canción con bucle: Menu
+@04,02,04HOTS~1.WAV,E161,36,7C,FF; Carga canción con bucle: Hot Summer Riding
+@05,02,04HOTS~1.WAV,E161,39,7C,FF; Carga canción con bucle: Hot Summer Riding
+@06,02,05RAND~1.WAV,E161,41,7C,FF; Carga canción con bucle: Random Apporoach
+@07,02,06NEXT~1.WAV,E161,3E,FF,FF; Carga canción con bucle: Next (Final Campeonato)
+@08,02,06NEXT~1.WAV,E161,3F,FF,FF; Carga canción con bucle: Next (Final Carrera)
+@09,02,07SELF~1.WAV,E161,37,7C,FF; Carga canción con bucle: Self-Confidence (F3000)
+@0A,02,07SELF~1.WAV,E161,3A,7C,FF; Carga canción con bucle: Self-Confidence (F3000)
+@0B,02,08VANI~1.WAV,E161,43,7C,FF; Carga canción con bucle: Vanishing Heat
+@0C,02,10F1SP~1.WAV,E161,38,7C,FF; Carga canción con bucle: F1 Spirit
+@0D,02,10F1SP~1.WAV,E161,3B,7C,FF; Carga canción con bucle: F1 Spirit
+@0E,01,PAUSE.WAV,E160,02,FF,FF; Carga canción sin bucle: Pausa
+@0F,02,11STRE~1.WAV,E161,40,FF,FF; Carga canción con bucle: Street Collection (Ending)
+
+
+;Todo esto libre.(10h a 3Ch)
+@3D,04,,E161,3C,,; Comando de Stop. PIT.Quita la canción y devuelve el SCC+PSG.
+@3E,04,,E161,29,,; Comando de Stop. Ready,Set,Go. Quita la canción y devuelve el SCC+PSG.
+@3F,04,,E161,46,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG.
+@40,08,,E160,01,,; Fade Out Corto.

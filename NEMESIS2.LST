@@ -1,0 +1,45 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Nemesis II.(60Hz. En 50Hz las canciones se quedan cortas).
+@00,07,,,A0,,; Selecciona el nivel de volumen de las canciones. Para el Nemesis II queda bien con el SCC(a tope) a A0 el ADPCM.
+@01,01,01ABOV~1.WAV,E191,3F,FF,FF; Carga canción sin bucle: Above the Horizon (Opening Theme)
+@02,01,02STAR~1.WAV,E191,3E,DF,FF; Carga canción sin bucle: Starting Point (Start)
+@03,02,03AJOU~1.WAV,E191,2B,DE,FF; Carga canción con bucle: A Journey to the Start (Air Battle Theme)
+@04,02,04KILL~1.WAV,E191,2C,DE,FF; Carga canción con bucle: Killer Coast Land (Colossus Planet Theme)
+@05,02,05AFIG~1.WAV,E191,34,DE,FF; Carga canción con bucle: A Fighter (Boss)
+@06,02,06APLA~1.WAV,E191,2D,DE,FF; Carga canción con bucle: A Planet of Plants (Plant Planet Theme)
+@07,02,07REDD~1.WAV,E191,2E,DE,FF; Carga canción con bucle: Red Diamond (Ancient Planet Theme)
+@08,02,08DANC~1.WAV,E191,31,DE,FF; Carga canción con bucle: Dancing Venus (Floating Continents Theme)
+@09,02,09BLAZ~1.WAV,E191,30,DE,FF; Carga canción con bucle: Blazed Up (Flame Planet Theme)
+@0A,02,10FRON~1.WAV,E191,32,DE,FF; Carga canción con bucle: Frontier Disputes (Life Planet Theme)
+@0B,02,11TEAR~1.WAV,E191,36,DE,FF; Carga canción con bucle: Tears Began Gushing (Space Tricky Area Theme)
+@0C,02,12DON_~1.WAV,E191,33,DE,FF; Carga canción con bucle: Don_t Leave Me Alone (Fortress Planet Theme)
+@0D,01,13KILL~1.WAV,E191,40,DE,FF; Carga canción sin bucle: Killer Love (Return Theme)
+@0E,02,14MOON~1.WAV,E191,29,DE,FF; Carga canción con bucle: Moonspin (Large Battleship Venom Theme)
+@0F,02,15POWE~1.WAV,E191,35,DE,FF; Carga canción con bucle: Powerful Waves (Boss Battleship Interior _ Last Boss)
+@10,01,16ADRE~1.WAV,E191,41,FF,FF; Carga canción sin bucle: A Dream of Dreamer (Ending Theme)
+@11,01,17THEW~1.WAV,E191,42,FF,FF; Carga canción sin bucle: The War is Over (Game Over)
+
+;Todo esto libre.(12h a 35h)
+@36,04,,E191,39,,; Sonido muerte Venom. Quita la canción y devuelve el SCC+PSG.
+@37,04,,E191,3C,,; Sonido salida hiperespacio. Quita la canción y devuelve el SCC+PSG.
+@38,04,,E191,37,,; Sonido captura boss interior. Quita la canción y devuelve el SCC+PSG.
+@39,04,,E191,38,,; Sonido burbujas desvanece escenario. Quita la canción y devuelve el SCC+PSG.
+@3A,04,,E191,3A,,; Sonido de muerto monstruo 1. Quita la canción y devuelve el SCC+PSG.
+@3B,04,,E191,3B,,; Sonido de muerto monstruo 2. Quita la canción y devuelve el SCC+PSG.
+@3C,04,,E191,3D,,; Sonido de muerto. Quita la canción y devuelve el SCC+PSG.
+@3D,04,,E191,43,,; Comando de Stop. Quita la canción y devuelve el SCC+PSG.
+@3E,08,,E190,01,,; Fade Out Corto.
+@3F,05,,E190,02,00,00; Comando de pausar la canción. Activa todos los canales.
+@40,06,,E190,00,,; Comando de quitar pausa de la canción. Recupera los canales anteriores.

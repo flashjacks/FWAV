@@ -1,0 +1,40 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Dragon Slayer VI.
+@00,07,,,90,,; Selecciona el nivel de volumen de las canciones. Para el DS6 queda bien con el FM(a tope) a 90 el ADPCM.
+@01,01,01OPEN~1.WAV,0C42,50,FF,FF; Carga canción sin bucle: OPENING No enlazable.
+@02,02,03UTIL~1.WAV,0C42,51,3F,FF; Carga canción con bucle: UTILITY No enlazable.
+@03,02,04HERO~1.WAV,0C42,52,3F,FF; Carga canción con bucle: HEROS MARCH No enlazable.
+@04,02,05CITY~1.WAV,0C42,07,3F,FF; Carga canción con bucle: CITY ok
+@05,02,06FIEL~1.WAV,0C42,00,3F,FF; Carga canción con bucle: FIELD ok
+@06,02,07DUNG~1.WAV,0C42,08,3F,FF; Carga canción con bucle: DUNGEON ok
+@07,02,08BATT~1.WAV,0C42,01,3F,FF; Carga canción con bucle: BATTLE ok
+@08,02,09NILG~1.WAV,0C42,06,3F,FF; Carga canción con bucle: NILGID CASTLE ok
+@09,02,10CAST~1.WAV,0C42,04,3F,FF; Carga canción con bucle: CASTLE ok
+@0A,02,11THEV~1.WAV,0C42,05,3F,FF; Carga canción con bucle: THE VOICE OF GOD ok
+@0B,02,12EVEN~1.WAV,0C42,0B,3F,FF; Carga canción con bucle: EVENT CLEAR ok
+@0C,02,13SHIP~1.WAV,0C42,09,3F,FF; Carga canción con bucle: SHIP ok
+@0D,02,14PIRA~1.WAV,0C42,0A,3F,FF; Carga canción con bucle: PIRATE ISLAND ok
+@0E,02,17ENDI~1.WAV,0C42,53,FF,FF; Carga canción con bucle: ENDING 1 No enlazable.
+@0F,02,18ENDI~1.WAV,0C42,54,FF,FF; Carga canción con bucle: ENDING 2 No enlazable.
+@10,02,19GAME~1.WAV,0C42,02,3F,FF; Carga canción con bucle: GAME OVER ok
+@11,02,15DRAGON.WAV,0C42,03,3F,FF; Carga canción con bucle: DRAGON ok
+
+
+
+
+;Todo esto libre.(12h a 3Eh)
+
+@3F,0A,,0C42,FE,,; Salta a canción anterior.
+@40,04,,0C42,FF,,; Comando de Stop. Quita la canción y devuelve el FM+PSG.
