@@ -1,8 +1,18 @@
 # FWAV v1.1
  Flashjacks Wave Loader
 
+For run, first:
 
-First:
+FWAV xxx.WAV o xxx.LST
+
+Second:
+
+FROM or FDSK ...of your favorite game.
+
+
+
+For compile, first:
+
 sjasm.exe FWAV.asm FWAV.COM
 
 
