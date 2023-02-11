@@ -1,0 +1,24 @@
+; Listado de sustitución de canciones en juegos por acceso a RAM.
+;
+; Formato: @Orden,Comando,NombreFichero,DirecciónRAM,ValorRAM,MuteSCC,MuteFM;
+;
+; Orden: Orden de ejecución desde 00 a 40h
+; Comando: 00-Sin operacion,01-LoadMusicSinBucle,02-LoadMusicBucle,03-FadeOutL,04-Stop,05-PauseON,06-PauseOFF,07-VolLevel,08-FadeOutC,09-CambioMuteCanal,0A-LoadPrevMus,0B-EligemuteCanalsivalor,0C-LoadMusicBucleConPreMute
+; NombreFichero: Nombre del archivo WAV. A ser posible ADPCM 16bit Stereo.
+; DirecciónRAM: Dirección de lectura en la RAM del MSX donde escribe el valor a vigilar.
+; ValorRAM: Valor en RAM el cual ejecuta la orden programada. En VolLevel es el nivel de volumen con un max de E0h-->100%
+; MuteSCC: Silencia los canales a uno 8bits: 01234-->abcde canales SCC, 567-->abc canales PSG 
+; MuteFM: Silencia los canales a uno 8bits: 01234567 --> Canales FM. El 7 es el canal 7+8+percusiones. El resto son sus canales correspondientes.
+;
+
+; Recordatorio de como cargar esto en tu MSX.
+; Primero: FWAV BAD_ORIG.LST
+; Segundo: FROM BAD_8K.ROM enter y luego la tecla R de Reset. Y comienza el espectaculo.
+; Nota: Debes de tener la ROM y el WAV que se menciona en este documento en la misma carpeta.
+
+; Bad Apple Versión original. Versión ROM 8k Konami 60Hz. Es importante que esté a 60Hz. En la FlashJacks con la configuración original no debes de tener problemas.
+@00,07,,,E0,,; Selecciona el nivel de volumen de las canciones. (a tope) a E0 el ADPCM.
+@01,01,BAD_ORIG.WAV,C2BA,06,FF,FF; Carga canción sin bucle: BadApple Original
+
+;Todo esto libre.
+;40,08,,E160,01,,; Fade Out Corto.
